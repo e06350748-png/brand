@@ -5,16 +5,16 @@ export default [
   index("routes/home.tsx"),
 
   // صفحات المنتجات والسلة
-  route("products", "routes/products.tsx"),
-  route("cart", "routes/cart.tsx"),
+  route("products", "routes/Products.tsx"),
+  route("cart", "routes/Cart.tsx"),
   
   // صفحات Authentication
-  route("login", "routes/login.tsx"),
-  route("register", "routes/register.tsx"),
-  route("profile", "routes/profile.tsx"),
+  route("login", "routes/Login.tsx"),
+  route("register", "routes/Register.tsx"),
+  route("profile", "routes/Profile.tsx"),
   
   // صفحات إضافية
-  route("contact", "routes/contact.tsx"),
+  route("contact", "routes/Contact.tsx"),
   
   // صفحات الخطأ (في الآخر دائماً)
   route("error-boundary", "routes/error/error-boundary.tsx"),
