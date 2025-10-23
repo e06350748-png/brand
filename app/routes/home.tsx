@@ -1,51 +1,77 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
+import { useCart } from "../context/CartContext";
 import { supabase } from "../utils/supabase";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 interface Product {
   id: string;
   name: string;
+  description: string;
   price: number;
   image_url: string;
+  category: string;
+  stock: number;
 }
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
+  const [notification, setNotification] = useState("");
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // 🛍️ Fetch first 10 products from Supabase
+  // 🩷 Fetch first 10 products from Supabase
   const fetchProducts = async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
         .from("products")
-        .select("id, name, price, image_url")
+        .select("*")
         .order("name", { ascending: true })
-        .limit(10); // 👈 limit to 10 items
+        .limit(10);
 
       if (error) throw error;
       setProducts(data || []);
     } catch (error) {
       console.error("Error fetching products:", error);
+      setNotification("Failed to load products 😢");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleAddToCart = (product: Product) => {
+    if (product.stock <= 0) {
+      setNotification(`${product.name} is out of stock! 😢`);
+      setTimeout(() => setNotification(""), 3000);
+      return;
+    }
+
+    addToCart(product);
+    setNotification(`${product.name} added to cart! 🎀`);
+    setTimeout(() => setNotification(""), 3000);
+  };
+
   return (
-    <div
-      className="min-h-screen text-gray-800 flex flex-col"
-      style={{ backgroundColor: "#fff0f5" }}
-    >
+    <div className="min-h-screen" style={{ backgroundColor: "#fff0f5" }}>
       <Navbar />
 
+      {/* 🔔 Notification */}
+      {notification && (
+        <div
+          className="fixed top-20 right-8 px-6 py-3 rounded-lg shadow-lg z-50 animate-bounce"
+          style={{ backgroundColor: "#ff69b4", color: "white" }}
+        >
+          {notification}
+        </div>
+      )}
+
       <main className="flex-grow">
-        {/* 🩷 Hero Section */}
+        {/* 🌸 Hero Section */}
         <section className="flex flex-col items-center justify-center text-center py-20 px-6">
           <h2 className="text-5xl font-bold mb-4" style={{ color: "#ff69b4" }}>
             Discover Your Perfect Style 💖
@@ -69,7 +95,7 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* ✨ Featured Products */}
+        {/* ✨ Featured Products Section */}
         <section className="px-8 py-12" id="products">
           <h3
             className="text-3xl font-semibold text-center mb-10"
@@ -83,76 +109,50 @@ export default function Home() {
               <div className="spinner"></div>
             </div>
           ) : (
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {products.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-2xl shadow-lg p-4 bg-white text-center hover:scale-105 transition-all"
-                >
-                  <div
-                    className="rounded-xl mb-4 flex items-center justify-center overflow-hidden"
-                    style={{
-                      backgroundColor: "#ffb6c1",
-                      height: "260px",
+            <div className="products-grid">
+              {products.map((product) => (
+                <div key={product.id} className="product-card fade-in">
+                  <img
+                    src={product.image_url}
+                    alt={product.name}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://via.placeholder.com/400x400/ffb6c1/ffffff?text=No+Image";
                     }}
-                  >
-                    <img
-                      src={item.image_url}
-                      alt={item.name}
-                      className="object-cover w-full h-full"
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          "https://via.placeholder.com/400x400/ffb6c1/ffffff?text=No+Image";
-                      }}
-                    />
-                  </div>
-                  <h4 className="text-xl font-semibold mb-2">{item.name}</h4>
-                  <p className="text-gray-500 mb-4 text-lg font-medium">
-                    ${item.price.toFixed(2)}
-                  </p>
-                  <Link
-                    to="/products"
-                    className="px-5 py-2 rounded-full text-white font-medium transition-all"
-                    style={{
-                      backgroundColor: "#ff69b4",
-                      boxShadow: "0 4px 12px rgba(255, 105, 180, 0.3)",
-                    }}
-                  >
-                    View Product 💕
-                  </Link>
+                  />
+
+                  <h3>{product.name}</h3>
+                  <p>{product.category}</p>
+                  <p>${product.price.toFixed(2)}</p>
+
+                  {product.stock > 0 ? (
+                    <button onClick={() => handleAddToCart(product)}>
+                      🛒 Add to Cart
+                    </button>
+                  ) : (
+                    <button disabled>😢 Out of Stock</button>
+                  )}
                 </div>
               ))}
             </div>
           )}
-        </section>
 
-        {/* 🌟 Features Section */}
-        <section className="py-16 px-8" style={{ backgroundColor: "white" }}>
-          <div className="max-w-6xl mx-auto">
-            <h3
-              className="text-3xl font-semibold text-center mb-12"
-              style={{ color: "#ff69b4" }}
-            >
-              Why Choose Us? 🌟
-            </h3>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center p-6">
-                <div className="text-5xl mb-4">🚚</div>
-                <h4 className="text-xl font-semibold mb-2">Free Shipping</h4>
-                <p className="text-gray-600">On orders over $50</p>
-              </div>
-              <div className="text-center p-6">
-                <div className="text-5xl mb-4">💝</div>
-                <h4 className="text-xl font-semibold mb-2">Quality Products</h4>
-                <p className="text-gray-600">Carefully curated items</p>
-              </div>
-              <div className="text-center p-6">
-                <div className="text-5xl mb-4">🎁</div>
-                <h4 className="text-xl font-semibold mb-2">Gift Wrapping</h4>
-                <p className="text-gray-600">Free on all purchases</p>
-              </div>
+          {/* 👇 زر يظهر فقط لو فيه منتجات */}
+          {products.length > 0 && (
+            <div className="text-center mt-12">
+              <Link
+                to="/products"
+                className="px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105"
+                style={{
+                  backgroundColor: "#ff69b4",
+                  color: "white",
+                  boxShadow: "0 4px 12px rgba(255, 105, 180, 0.3)",
+                }}
+              >
+                View All Products 💕
+              </Link>
             </div>
-          </div>
+          )}
         </section>
       </main>
     </div>
