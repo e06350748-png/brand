@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { useCart } from "../context/CartContext";
 import { supabase } from "../utils/supabase";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 interface Product {
   id: string;
