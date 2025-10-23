@@ -16,7 +16,7 @@ export const Navbar = () => {
               className="text-2xl font-bold cursor-pointer hover:opacity-80 transition-opacity"
               style={{ color: '#ff69b4' }}
             >
-              💖 Pink Brand
+              💖 basant Brand
             </h1>
           </Link>
 
