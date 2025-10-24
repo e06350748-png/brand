@@ -20,7 +20,11 @@ export default function Products() {
   const [notification, setNotification] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const categories = ["All", "Clothing", "Accessories", "Shoes"];
+  // ✅ الأنيميشن
+  const [animate, setAnimate] = useState(false);
+
+  // ✅ بدل ما تكون ثابتة، أصبحت ديناميكية
+  const [categories, setCategories] = useState<string[]>(["All"]);
 
   useEffect(() => {
     fetchProducts();
@@ -36,6 +40,14 @@ export default function Products() {
 
       if (error) throw error;
       setProducts(data || []);
+
+      // ✅ استخراج التصنيفات بدون تكرار
+      if (data) {
+        const uniqueCategories = Array.from(
+          new Set(data.map((item) => item.category))
+        );
+        setCategories(["All", ...uniqueCategories]);
+      }
     } catch (error: any) {
       console.error("Error fetching products:", error);
       setNotification("Failed to load products 😢");
@@ -61,6 +73,12 @@ export default function Products() {
       ? products
       : products.filter((p) => p.category === selectedCategory);
 
+  useEffect(() => {
+    setAnimate(false);
+    const t = setTimeout(() => setAnimate(true), 10);
+    return () => clearTimeout(t);
+  }, [selectedCategory]);
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fff0f5" }}>
       <Navbar />
@@ -78,9 +96,7 @@ export default function Products() {
       <main className="w-full max-w-[1300px] mx-auto px-6 py-12">
         {/* 🌸 Header */}
         <div className="text-center mb-12">
-          <h1
-            className="text-5xl font-bold mb-4 title-gradient"
-          >
+          <h1 className="text-5xl font-bold mb-4 title-gradient">
             Our Collection 💕
           </h1>
           <p className="text-gray-600 text-lg">
@@ -98,8 +114,7 @@ export default function Products() {
               style={{
                 backgroundColor:
                   selectedCategory === category ? "#ff69b4" : "white",
-                color:
-                  selectedCategory === category ? "white" : "#ff69b4",
+                color: selectedCategory === category ? "white" : "#ff69b4",
                 border: "2px solid #ff69b4",
                 boxShadow:
                   selectedCategory === category
@@ -108,9 +123,6 @@ export default function Products() {
               }}
             >
               {category === "All" && "🌸 "}
-              {category === "Clothing" && "👕 "}
-              {category === "Accessories" && "👜 "}
-              {category === "Shoes" && "👟 "}
               {category}
             </button>
           ))}
@@ -130,9 +142,13 @@ export default function Products() {
             </p>
 
             {/* 🧩 Product Grid */}
-            <div className="products-grid">
+<div
+  key={selectedCategory} // ✅ دا المفتاح السحري
+  className="products-grid fade-in"
+>
+
               {filteredProducts.map((product) => (
-                <div key={product.id} className="product-card fade-in">
+                <div key={product.id} className="product-card">
                   <img
                     src={product.image_url}
                     alt={product.name}

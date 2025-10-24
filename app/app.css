@@ -230,3 +230,7 @@ footer .links a:hover {
     gap: 0.8rem;
   }
 }
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
