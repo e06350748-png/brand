@@ -160,8 +160,8 @@ export default function Products() {
 
                   <h3>{product.name}</h3>
                   <p>{product.category}</p>
-                  <p>${product.price.toFixed(2)}</p>
-
+                  <p>{product.price.toFixed(2)}£</p>
+                  <p>{product.description}</p>
                   {product.stock > 0 ? (
                     <button onClick={() => handleAddToCart(product)}>
                       🛒 Add to Cart

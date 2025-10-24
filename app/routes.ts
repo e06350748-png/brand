@@ -15,7 +15,9 @@ export default [
   
   // صفحات إضافية
   route("contact", "routes/Contact.tsx"),
-  
+  route("privacy", "routes/PrivacyPolicy.tsx"),
+  route("terms", "routes/terms.tsx"),
+
   // صفحات الخطأ (في الآخر دائماً)
   route("error-boundary", "routes/error/error-boundary.tsx"),
   route("*", "routes/error/error404.tsx"),

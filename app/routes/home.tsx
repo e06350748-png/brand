@@ -96,7 +96,7 @@ export default function Home() {
         </section>
 
         {/* ✨ Featured Products Section */}
-        <section className="px-8 py-12" id="products">
+        <section className="px-8 py-12 " id="products">
           <h3
             className="text-3xl font-semibold text-center mb-10"
             style={{ color: "#ff69b4" }}
@@ -123,8 +123,8 @@ export default function Home() {
 
                   <h3>{product.name}</h3>
                   <p>{product.category}</p>
-                  <p>${product.price.toFixed(2)}</p>
-
+                  <p>£{product.price.toFixed(2)}£</p>
+                  <p>{product.description}</p>
                   {product.stock > 0 ? (
                     <button onClick={() => handleAddToCart(product)}>
                       🛒 Add to Cart
