@@ -11,7 +11,7 @@ export default function TermsAndConditions() {
         </h1>
 
         <p className="mb-6 text-gray-600">
-          Welcome to <strong>basant Brand</strong>! These Terms & Conditions outline
+          Welcome to <strong>Bassant Brand</strong>! These Terms & Conditions outline
           the rules and regulations for the use of our website and services.
           By accessing this website, we assume you accept these terms in full.
         </p>
@@ -48,7 +48,7 @@ export default function TermsAndConditions() {
         </h2>
         <p className="mb-4 text-gray-600">
           All content, designs, and materials available on this website are the
-          property of <strong>basant Brand</strong> and are protected by copyright
+          property of <strong>Bassant Brand</strong> and are protected by copyright
           laws. You may not reproduce or distribute any part of the website without
           prior written permission.
         </p>

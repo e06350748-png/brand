@@ -7,10 +7,10 @@ export default function Footer() {
       <div className="container mx-auto px-6 flex flex-col items-center">
         {/* 💖 Brand & Copyright */}
         <div className="mb-6">
-          <h3 className="text-3xl font-bold mb-2">basant Brand 💖</h3>
+          <h3 className="text-3xl font-bold mb-2">Bassant Brand 💖</h3>
           <p className="text-sm" style={{ color: "#ffe4ec" }}>
             © {new Date().getFullYear()}{" "}
-            <span className="font-semibold">basant Brand</span>. All rights
+            <span className="font-semibold">Bassant Brand</span>. All rights
             reserved.
           </p>
         </div>

@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
         </h1>
 
         <p className="mb-6 text-gray-700 leading-relaxed">
-          At <strong>basant Brand</strong>, we are committed to protecting your privacy.
+          At <strong>Bassant Brand</strong>, we are committed to protecting your privacy.
           This Privacy Policy explains how we collect, use, and safeguard your information
           when you visit our website and use our services.
         </p>
